@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     mod_pannellum
- * @version     1.0.0
+ * @version     1.0.1
  * @author      Niko Winckel
  * @copyright   (C) 2025 Niko Winckel. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt

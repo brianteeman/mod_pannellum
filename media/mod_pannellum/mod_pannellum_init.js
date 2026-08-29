@@ -332,12 +332,10 @@
         // Passe die Position für Fullscreen an
         infoBox.style.position = 'absolute';
         backdrop.style.position = 'absolute';
-        console.log('[pannellum] Info-Box im Fullscreen-Modus geöffnet');
       } else {
         // Normal-Modus
         infoBox.style.position = 'fixed';
         backdrop.style.position = 'fixed';
-        console.log('[pannellum] Info-Box im Normal-Modus geöffnet');
       }
       
       // Füge Elemente zum richtigen Container hinzu
@@ -420,8 +418,6 @@
       return;
     }
 
-    console.log('[pannellum] init', { id: el.id, cfg: cfg });
-
     var container = el.id;
     var wrapperId = 'pannellum-wrapper-' + el.id.replace('pannellum-', '');
 
@@ -435,11 +431,9 @@
 
         // Verarbeite Hotspots für Single-Mode
         var hotspots = cfg.hotSpots || [];
-        console.log('[pannellum] Single-Mode Hotspots (vor Verarbeitung)', hotspots);
         hotspots = processHotspots(hotspots);
-        console.log('[pannellum] Single-Mode Hotspots (nach Verarbeitung)', hotspots);
 
-        pannellum.viewer(container, {
+        var viewerOpts = {
           type: 'equirectangular',
           panorama: cfg.panorama,
           autoLoad: !!cfg.autoLoad,
@@ -447,7 +441,23 @@
           pitch: +cfg.pitch || 0,
           hfov: +cfg.hfov || 100,
           hotSpots: hotspots
-        });
+        };
+
+        // Anzeigeoptionen aus cfg.display übernehmen
+        if (cfg.display) {
+          if (cfg.display.showCompass) viewerOpts.compass = true;
+          // showGyro wird aktuell nicht von Pannellum nativ unterstützt
+          if (cfg.display.autoRotate) {
+            viewerOpts.autoRotate = cfg.display.autoRotateSpeed || 2;
+            viewerOpts.autoRotateInactivityDelay = cfg.display.autoRotateDelay || 3000;
+          }
+        }
+
+        if (cfg.strings) {
+          viewerOpts.strings = cfg.strings;
+        }
+
+        pannellum.viewer(container, viewerOpts);
         return;
       }
 
@@ -464,9 +474,7 @@
         Object.keys(scenes).forEach(function(sceneKey) {
           var scene = scenes[sceneKey];
           if (scene.hotSpots) {
-            console.log('[pannellum] Multi-Mode Hotspots für Szene ' + sceneKey + ' (vor Verarbeitung)', scene.hotSpots);
             scene.hotSpots = processHotspots(scene.hotSpots);
-            console.log('[pannellum] Multi-Mode Hotspots für Szene ' + sceneKey + ' (nach Verarbeitung)', scene.hotSpots);
           }
         });
 
@@ -483,19 +491,30 @@
         var viewerCfg = {
           "default": {
             firstScene: first,
-            autoLoad: true
+            autoLoad: !!cfg.autoLoad
           },
           scenes: scenes
         };
 
-        console.log('[pannellum] creating multi viewer', viewerCfg);
+        // Anzeigeoptionen aus cfg.display übernehmen
+        if (cfg.display) {
+          if (cfg.display.showCompass) viewerCfg["default"].compass = true;
+          // showGyro wird aktuell nicht von Pannellum nativ unterstützt
+          if (cfg.display.autoRotate) {
+            viewerCfg["default"].autoRotate = cfg.display.autoRotateSpeed || 2;
+            viewerCfg["default"].autoRotateInactivityDelay = cfg.display.autoRotateDelay || 3000;
+          }
+        }
+
+        if (cfg.strings) {
+          viewerCfg["default"].strings = cfg.strings;
+        }
+
         var v = pannellum.viewer(container, viewerCfg);
 
         // Event-Listener für Szenenwechsel (um Bildbeschreibung zu aktualisieren)
         try {
           v.on('scenechange', function (sceneId) {
-            console.log('[pannellum] scene changed to:', sceneId);
-            
             // Aktualisiere Bildbeschreibung
             var currentScene = cfg.scenes[sceneId];
             if (currentScene && currentScene.description) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     mod_pannellum
- * @version     1.0.0
+ * @version     1.0.1
  * @author      Niko Winckel
  * @copyright   (C) 2025 Niko Winckel. All rights reserved.
  * @license     GNU General Public License version 2 or later
@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 // WebAssets fürs Frontend laden
@@ -175,8 +176,12 @@ $displayOptions = [
 
 $config = [
     'type'     => 'single',
-    'autoLoad' => (bool) $params->get('single_autoload', 1),
+    'autoLoad' => (bool) $params->get('autoload', $params->get('single_autoload', 1)),
     'display'  => $displayOptions,
+    'strings'  => [
+        'loadButtonLabel' => Text::_('MOD_PANNELLUM_LOAD_BUTTON_LABEL'),
+        'loadingLabel'    => Text::_('MOD_PANNELLUM_LOADING_LABEL'),
+    ],
 ];
 
 if ($mode === 'single') {
@@ -216,7 +221,7 @@ if ($mode === 'single') {
     $config['type']    = 'multi';
     $config['default'] = [
         'firstScene' => null,
-        'autoLoad'   => true,
+        'autoLoad'   => (bool) $params->get('autoload', $params->get('single_autoload', 1)),
     ];
     $config['scenes']  = [];
 

@@ -2,7 +2,7 @@
 
 A feature-rich Joomla 5 & 6 module for embedding interactive 360° panoramas, powered by the [Pannellum](https://pannellum.org/) library by Matthew Petroff.
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Author:** Niko Winckel  
 **Website:** [nik-o-mat.de](https://nik-o-mat.de)  
 **License:** GNU/GPL v2 or later (Module) | MIT (Pannellum library)

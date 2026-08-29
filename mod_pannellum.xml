@@ -7,7 +7,7 @@
     <copyright>(C) 2025 Niko Winckel. All rights reserved.</copyright>
     <license>GNU General Public License version 3 or later</license>
     <creationDate>2026-03-29</creationDate>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>MOD_PANNELLUM_XML_DESCRIPTION</description>
     <namespace path="src">ModPannellum</namespace>
 
@@ -57,6 +57,19 @@
                 >
                     <option value="single">MOD_PANNELLUM_MODE_SINGLE</option>
                     <option value="multi">MOD_PANNELLUM_MODE_MULTI</option>
+                </field>
+
+                <!-- Automatisches Laden (gilt für beide Modi) -->
+                <field
+                    name="autoload"
+                    type="radio"
+                    label="MOD_PANNELLUM_FIELD_AUTOLOAD"
+                    description="MOD_PANNELLUM_AUTOLOAD_DESC"
+                    default="1"
+                    class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
                 </field>
 
                 <!-- SINGLE MODE -->
@@ -111,19 +124,6 @@
                     showon="mode:single"
                     hint="30-120"
                 />
-
-                <field
-                    name="single_autoload"
-                    type="radio"
-                    label="MOD_PANNELLUM_FIELD_AUTOLOAD"
-                    description="MOD_PANNELLUM_AUTOLOAD_DESC"
-                    default="1"
-                    showon="mode:single"
-                    class="btn-group btn-group-yesno"
-                >
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
-                </field>
 
                 <!-- BILDBESCHREIBUNG FÜR SINGLE MODE -->
                 <field

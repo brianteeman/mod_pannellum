@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     mod_pannellum
- * @version     1.0.0
+ * @version     1.0.1
  * @author      Niko Winckel
  * @copyright   (C) 2025 Niko Winckel. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -32,7 +32,7 @@ $shadowColor = isset($config['display']['shadowColor']) ? $config['display']['sh
 $shadowOpacity = isset($config['display']['shadowOpacity']) ? $config['display']['shadowOpacity'] : 0.3;
 
 // Konvertiere Hex zu RGBA
-function hexToRgba($hex, $alpha = 1.0) {
+$hexToRgba = static function (string $hex, float $alpha = 1.0): string {
     $hex = ltrim($hex, '#');
     if (strlen($hex) === 3) {
         $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
@@ -41,12 +41,12 @@ function hexToRgba($hex, $alpha = 1.0) {
     $g = hexdec(substr($hex, 2, 2));
     $b = hexdec(substr($hex, 4, 2));
     return "rgba($r, $g, $b, $alpha)";
-}
+};
 
 // Shadow-Styles zusammenbauen
 $shadowStyles = '';
 if ($shadowEnabled) {
-    $shadowColorRgba = hexToRgba($shadowColor, $shadowOpacity);
+    $shadowColorRgba = $hexToRgba($shadowColor, $shadowOpacity);
     $shadowStyles = 'box-shadow: ' . 
                     htmlspecialchars($shadowHorizontal, ENT_QUOTES, 'UTF-8') . 'px ' . 
                     htmlspecialchars($shadowVertical, ENT_QUOTES, 'UTF-8') . 'px ' . 
@@ -88,7 +88,7 @@ if ($descriptionData) {
     $descriptionTextColor = isset($descriptionData['descriptionTextColor']) ? $descriptionData['descriptionTextColor'] : '#ffffff';
     $descriptionBgColor = isset($descriptionData['descriptionBgColor']) ? $descriptionData['descriptionBgColor'] : '#000000';
     $descriptionBgOpacity = isset($descriptionData['descriptionBgOpacity']) ? $descriptionData['descriptionBgOpacity'] : 0.7;
-    $descriptionBgColorRgba = hexToRgba($descriptionBgColor, $descriptionBgOpacity);
+    $descriptionBgColorRgba = $hexToRgba($descriptionBgColor, $descriptionBgOpacity);
 }
 ?>
 
